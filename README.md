@@ -4,12 +4,12 @@ A beautiful, Apple-inspired personal website with dark mode design. Built with m
 
 ## Features
 
-- 🎨 **Apple-like Design**: Clean, minimal, and elegant interface
-- 🌙 **Dark Mode**: Beautiful dark theme optimized for readability
-- 📱 **Fully Responsive**: Works seamlessly on all devices
-- ✨ **Smooth Animations**: Elegant transitions and scroll effects
-- 🚀 **Fast & Lightweight**: No heavy frameworks, pure vanilla code
-- ♿ **Accessible**: Semantic HTML and proper ARIA labels
+- **Apple-like Design**: Clean, minimal, and elegant interface
+- **Dark Mode**: Beautiful dark theme optimized for readability
+- **Fully Responsive**: Works seamlessly on all devices
+- **Smooth Animations**: Elegant transitions and scroll effects
+- **Fast & Lightweight**: No heavy frameworks, pure vanilla code
+- **Accessible**: Semantic HTML and proper ARIA labels
 
 ## Sections
 
