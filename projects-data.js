@@ -38,6 +38,14 @@ const allProjects = [
         tags: ["Machine Learning", "Neuroscience", "Python", "Research"],
         image: null
     },
+        {
+        title: "NIMHD Study on Social Game Dynamics Influencing Physiological Responses",
+        description: "Implemented a computer-mediated Cyberball model to examine how interactive game dynamics influence users’behavioral, affective, and physiological responses",
+        link: "#",
+        linkText: "Link",
+        tags: ["Human Study Design", "Project Management"],
+        image: null
+    },
 
     // Add more projects here - they'll appear on projects.html but not on the home page
     // Example with single link:
