@@ -24,7 +24,7 @@ const allProjects = [
     },
     {
         title: "NIMHD Study on Social Game Dynamics Influencing Physiological Responses",
-        description: "Implemented a computer-mediated Cyberball model to examine how interactive game dynamics influence users’behavioral, affective, and physiological responses",
+        description: "Implemented a computer-mediated Cyberball model to examine how interactive game dynamics influence users’ biological, behavioral, and affective responses",
         link: "#",
         linkText: "Link",
         tags: ["Human Study Design", "Project Management"],
