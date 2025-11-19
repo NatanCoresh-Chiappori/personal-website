@@ -24,6 +24,36 @@ A beautiful, Apple-inspired personal website with dark mode design. Built with m
 2. **Open `index.html`** in your web browser
 3. **Customize** the content to match your personal information
 
+## 🚀 Pushing Changes to Live Website
+
+Your website is connected to GitHub and Netlify for automatic deployment!
+
+### Quick Method (Easiest)
+1. **Double-click** `push-changes.ps1` 
+2. Follow the prompts to enter a commit message
+3. Done! Netlify will auto-deploy in ~30 seconds
+
+### Manual Method
+
+After making changes to your files:
+
+```bash
+# 1. Stage all changes
+git add .
+
+# 2. Commit with a message
+git commit -m "Update: your changes here"
+
+# 3. Push to GitHub
+git push
+```
+
+Netlify automatically detects the push and redeploys your site!
+
+### Check Deployment Status
+- Visit your Netlify dashboard to see deployment status
+- Your site URL: Check your Netlify site settings
+
 ## Customization
 
 ### Personal Information
