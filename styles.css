@@ -512,7 +512,7 @@ html.theme-flash::before {
 }
 
 .hero-subtitle {
-    font-size: 15px;
+    font-size: 10px;
     color: var(--text-primary);
     font-weight: 800;
     margin-bottom: 16px;
