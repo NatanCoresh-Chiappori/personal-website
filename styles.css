@@ -1805,7 +1805,7 @@ section {
     }
 }
 
-/* Reduce animations on mobile devices */
+/* Reduce animations on mobile devices ONLY */
 @media (max-width: 768px) {
     /* Disable or reduce animations - be more specific to avoid affecting desktop */
     html *,
@@ -1821,7 +1821,7 @@ section {
         scroll-behavior: auto !important;
     }
     
-    /* Disable transform animations */
+    /* Disable transform animations on mobile only */
     .work-item:hover,
     .work-item-link:hover {
         transform: none !important;
@@ -1860,19 +1860,19 @@ section {
         transform: none !important;
     }
     
-    /* Reduce fade-in animations */
+    /* Reduce fade-in animations on mobile */
     .fade-in {
         opacity: 1 !important;
         transform: none !important;
     }
     
-    /* Disable parallax */
+    /* Disable parallax on mobile */
     .hero-content {
         transform: none !important;
         opacity: 1 !important;
     }
     
-    /* Reduce scroll indicator animation */
+    /* Reduce scroll indicator animation on mobile */
     .scroll-indicator {
         animation: none !important;
     }
@@ -1881,30 +1881,146 @@ section {
         animation: none !important;
     }
     
-    /* Reduce typing animation speed */
+    /* Reduce typing animation on mobile */
     .hero-subtitle.typing-cursor::after {
         animation: none !important;
     }
     
-    /* Reduce mouth animation */
+    /* Reduce mouth animation on mobile */
     .mouth {
         animation: none !important;
     }
     
-    /* Disable theme flash animation */
+    /* Disable theme flash animation on mobile */
     html.theme-flash::before {
         animation: none !important;
         opacity: 0 !important;
     }
     
-    /* Reduce pop-out animations */
+    /* Reduce pop-out animations on mobile */
     .nav-link.pop-out {
         animation: none !important;
     }
     
-    /* Disable skill bar animations */
+    /* Disable skill bar animations on mobile */
     .skill-progress {
         transition: none !important;
+    }
+}
+
+/* Ensure desktop animations are fully enabled (above 768px) */
+@media (min-width: 769px) {
+    /* Restore all hover animations on desktop */
+    .work-item:hover,
+    .work-item-link:hover {
+        transform: translateY(-10px) !important;
+        box-shadow: 0 20px 60px var(--shadow) !important;
+        border-color: var(--accent) !important;
+    }
+    
+    .work-item:hover .work-image img {
+        transform: scale(1.05) !important;
+    }
+    
+    .publication-card:hover {
+        transform: translateY(-4px) !important;
+        box-shadow: 0 8px 24px rgba(0, 122, 255, 0.15) !important;
+    }
+    
+    .social-icon:hover {
+        transform: translateY(-4px) scale(1.1) !important;
+    }
+    
+    .profile-image:hover {
+        transform: scale(1.05) !important;
+    }
+    
+    .btn-primary:hover,
+    .btn-secondary:hover {
+        transform: translateY(-2px) !important;
+    }
+    
+    .hero-resume .btn:hover {
+        transform: translateY(-2px) !important;
+    }
+    
+    .work-link:hover {
+        transform: translateX(4px) !important;
+    }
+    
+    .nav-link:hover:not(.active) {
+        transform: translateX(4px) !important;
+    }
+    
+    /* Ensure fade-in animations work on desktop */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Restore scroll indicator animation on desktop */
+    .scroll-indicator {
+        animation: bounce 2s infinite !important;
+    }
+    
+    .mouse::before {
+        animation: scroll 2s infinite !important;
+    }
+    
+    /* Restore typing animation on desktop */
+    .hero-subtitle.typing-cursor::after {
+        animation: blink 1s infinite !important;
+    }
+    
+    /* Restore mouth animation on desktop */
+    .mouth {
+        animation: mouthBlink var(--mouth-duration, 12s) ease-in-out infinite !important;
+    }
+    
+    /* Restore theme flash animation on desktop */
+    html.theme-flash::before {
+        animation: themeFlash 1.1s ease-out forwards !important;
+    }
+    
+    /* Restore pop-out animations on desktop */
+    .nav-link.pop-out {
+        animation: popOut 0.3s ease-out !important;
+    }
+    
+    /* Restore skill bar animations on desktop */
+    .skill-progress {
+        transition: width 1s ease !important;
+    }
+    
+    /* Ensure hero content animation works on desktop */
+    .hero-content {
+        animation: fadeInUp 1s ease !important;
+    }
+    
+    /* Ensure transitions work properly on desktop */
+    .work-item,
+    .work-item-link,
+    .publication-card,
+    .social-icon,
+    .profile-image,
+    .btn,
+    .work-link,
+    .nav-link {
+        transition: all 0.3s ease !important;
+    }
+    
+    .work-item {
+        transition: all 0.4s ease !important;
+    }
+    
+    .work-image img {
+        transition: transform 0.4s ease !important;
     }
 }
 
