@@ -117,8 +117,11 @@
                 <span class="title-line">Hello, I'm</span>
                 <span class="title-line title-main">Natan Coresh-Chiappori</span>
             </h1>
-            <p class="hero-subtitle"> Graduate Research Scientist, Applied Neuroscience, 
-                <br> Morgan State University</p>
+            <p class="hero-subtitle">
+                GRADUATE RESEARCH SCIENTIST,<br>
+                APPLIED NEUROSCIENCE,<br>
+                MORGAN STATE UNIVERSITY
+            </p>
             <p class="hero-description">I build and study technologies designed to enhance human well-being and deepen our understanding of the mind.
             <div class="hero-profile">
                 <img src="images/profile.jpg" alt="Natan Coresh-Chiappori" class="profile-image">
@@ -401,59 +404,45 @@
                     subtitle.classList.remove('typing-cursor');
                 } else {
                     // Get the original HTML content to preserve line breaks
-                    const originalHTML = subtitle.innerHTML.trim();
-                    // Extract text parts and line breaks
-                    const parts = [];
-                    let currentText = '';
-                    for (let i = 0; i < originalHTML.length; i++) {
-                        if (originalHTML.substring(i, i + 4) === '<br>') {
-                            if (currentText) {
-                                parts.push({ type: 'text', content: currentText });
-                                currentText = '';
-                            }
-                            parts.push({ type: 'break' });
-                            i += 3; // Skip the '<br>' characters
+                    const normalizedHTML = subtitle.innerHTML
+                        .replace(/>\s+/g, '>')
+                        .replace(/\s+</g, '<')
+                        .replace(/\s{2,}/g, ' ')
+                        .trim();
+                    // Convert subtitle HTML to a sequential stream of characters and breaks
+                    const tokens = [];
+                    for (let i = 0; i < normalizedHTML.length; i++) {
+                        if (normalizedHTML.substring(i, i + 4) === '<br>') {
+                            tokens.push({ type: 'break' });
+                            i += 3;
                         } else {
-                            currentText += originalHTML[i];
+                            tokens.push({ type: 'char', value: normalizedHTML[i] });
                         }
                     }
-                    if (currentText) {
-                        parts.push({ type: 'text', content: currentText });
-                    }
-                    
+
                     subtitle.innerHTML = '';
                     subtitle.classList.add('typing-cursor');
-                    
-                    let partIndex = 0;
-                    let charIndex = 0;
-                    
+
+                    let tokenIndex = 0;
+
                     function typeWriter() {
-                        if (partIndex < parts.length) {
-                            const part = parts[partIndex];
-                            
-                            if (part.type === 'break') {
-                                subtitle.innerHTML += '<br>';
-                                partIndex++;
-                                charIndex = 0;
-                                setTimeout(typeWriter, 30); // Reduced delay for smoother line transition
-                            } else if (charIndex < part.content.length) {
-                                subtitle.innerHTML += part.content.charAt(charIndex);
-                                charIndex++;
-                                setTimeout(typeWriter, 50); // Fast typing speed (50ms per character)
-                            } else {
-                                partIndex++;
-                                charIndex = 0;
-                                setTimeout(typeWriter, 30); // Reduced delay between parts
-                            }
+                        if (tokenIndex >= tokens.length) {
+                            setTimeout(() => subtitle.classList.remove('typing-cursor'), 500);
+                            return;
+                        }
+
+                        const token = tokens[tokenIndex];
+                        if (token.type === 'break') {
+                            subtitle.innerHTML += '<br>';
+                            tokenIndex++;
+                            typeWriter();
                         } else {
-                            // Remove cursor after typing is complete
-                            setTimeout(() => {
-                                subtitle.classList.remove('typing-cursor');
-                            }, 500);
+                            subtitle.innerHTML += token.value;
+                            tokenIndex++;
+                            setTimeout(typeWriter, 50);
                         }
                     }
-                    
-                    // Start typing after a short delay
+
                     setTimeout(typeWriter, 500);
                 }
             }

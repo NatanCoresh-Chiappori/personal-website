@@ -498,7 +498,7 @@ html.theme-flash::before {
 
 .title-line {
     display: block;
-    font-size: clamp(60px, 12vw, 120px);
+    font-size: clamp(25px, 7vw, 80px);
     font-weight: 300;
     letter-spacing: -3px;
     line-height: 1.05;
@@ -509,10 +509,11 @@ html.theme-flash::before {
 .title-main {
     font-weight: 400;
     color: var(--text-primary);
+    font-size: clamp(30px, 5vw, 64px);
 }
 
 .hero-subtitle {
-    font-size: 24px;
+    font-size: 16px;
     color: var(--text-primary);
     font-weight: 800;
     margin-bottom: 16px;
@@ -523,6 +524,7 @@ html.theme-flash::before {
     position: relative;
     z-index: 101; /* Ensure subtitle is visible */
     pointer-events: auto;
+    line-height: 1.4;
 }
 
 .hero-subtitle.typing-cursor::after {
@@ -594,7 +596,7 @@ html.theme-flash::before {
 }
 
 .hero-description {
-    font-size: clamp(18px, 2.2vw, 22px);
+    font-size: clamp(16px, 2vw, 20px);
     color: var(--text-primary);
     max-width: 680px;
     margin: 0 auto 16px;
@@ -1850,7 +1852,7 @@ section {
     }
     
     .hero-subtitle {
-        font-size: 20px;
+        font-size: 18px;
     }
     
     .hero-description {
@@ -2240,7 +2242,7 @@ section {
     }
     
     .hero-subtitle {
-        font-size: 18px;
+        font-size: 16px;
         letter-spacing: 1px;
     }
     
