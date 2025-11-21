@@ -1807,14 +1807,17 @@ section {
 
 /* Reduce animations on mobile devices */
 @media (max-width: 768px) {
-    /* Disable or reduce animations */
-    *,
-    *::before,
-    *::after {
+    /* Disable or reduce animations - be more specific to avoid affecting desktop */
+    html *,
+    html *::before,
+    html *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.1s !important;
         transition-delay: 0s !important;
+    }
+    
+    html {
         scroll-behavior: auto !important;
     }
     

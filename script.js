@@ -147,57 +147,113 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all sections and work items (skip fade-in on mobile)
-if (window.innerWidth > 768) {
-    document.querySelectorAll('section, .work-item, .contact-item').forEach(el => {
-        el.classList.add('fade-in');
-        observer.observe(el);
-    });
-} else {
-    // On mobile, just make everything visible immediately
-    document.querySelectorAll('section, .work-item, .contact-item').forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-    });
+// Function to initialize animations based on screen size
+function initializeAnimations() {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // On mobile, just make everything visible immediately
+        document.querySelectorAll('section, .work-item, .contact-item').forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            el.classList.remove('fade-in');
+        });
+    } else {
+        // On desktop, enable fade-in animations
+        document.querySelectorAll('section, .work-item, .contact-item').forEach(el => {
+            el.classList.add('fade-in');
+            observer.observe(el);
+            // Remove inline styles that might have been set on mobile
+            el.style.opacity = '';
+            el.style.transform = '';
+        });
+    }
 }
 
-// Animate skill bars when they come into view (disabled on mobile)
-if (window.innerWidth > 768) {
-    const skillBars = document.querySelectorAll('.skill-progress');
-    const skillObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const progressBar = entry.target;
-                const width = progressBar.style.width;
-                progressBar.style.width = '0';
-                setTimeout(() => {
-                    progressBar.style.width = width;
-                }, 100);
-                skillObserver.unobserve(progressBar);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    skillBars.forEach(bar => {
-        skillObserver.observe(bar);
-    });
+// Initialize on load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeAnimations);
 } else {
-    // On mobile, show skill bars immediately at their final width
-    document.querySelectorAll('.skill-progress').forEach(bar => {
-        bar.style.transition = 'none';
-    });
+    initializeAnimations();
+}
+
+// Re-check on resize (debounced)
+let resizeTimeout;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(initializeAnimations, 250);
+});
+
+// Animate skill bars when they come into view (disabled on mobile)
+function initializeSkillBars() {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // On mobile, show skill bars immediately at their final width
+        document.querySelectorAll('.skill-progress').forEach(bar => {
+            bar.style.transition = 'none';
+        });
+    } else {
+        // On desktop, enable skill bar animations
+        const skillBars = document.querySelectorAll('.skill-progress');
+        skillBars.forEach(bar => {
+            bar.style.transition = ''; // Reset transition
+        });
+        
+        const skillObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const progressBar = entry.target;
+                    const width = progressBar.style.width;
+                    progressBar.style.width = '0';
+                    setTimeout(() => {
+                        progressBar.style.width = width;
+                    }, 100);
+                    skillObserver.unobserve(progressBar);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        skillBars.forEach(bar => {
+            skillObserver.observe(bar);
+        });
+    }
+}
+
+// Initialize skill bars
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSkillBars);
+} else {
+    initializeSkillBars();
 }
 
 // Parallax effect for hero section (disabled on mobile)
+let parallaxEnabled = window.innerWidth > 768;
+
 window.addEventListener('scroll', () => {
     // Disable parallax on mobile devices
-    if (window.innerWidth <= 768) return;
+    if (!parallaxEnabled || window.innerWidth <= 768) {
+        parallaxEnabled = false;
+        return;
+    }
     
     const scrolled = window.pageYOffset;
     const hero = document.querySelector('.hero-content');
     if (hero && scrolled < window.innerHeight) {
         hero.style.transform = `translateY(${scrolled * 0.3}px)`;
         hero.style.opacity = 1 - (scrolled / window.innerHeight) * 0.5;
+    }
+});
+
+// Update parallax enabled state on resize
+window.addEventListener('resize', () => {
+    parallaxEnabled = window.innerWidth > 768;
+    if (!parallaxEnabled) {
+        const hero = document.querySelector('.hero-content');
+        if (hero) {
+            hero.style.transform = '';
+            hero.style.opacity = '';
+        }
     }
 });
 
@@ -574,16 +630,28 @@ document.querySelectorAll('.work-item').forEach(item => {
 });
 
 // Smooth reveal for work items with stagger effect (disabled on mobile)
-if (window.innerWidth > 768) {
+function initializeWorkItemStagger() {
+    const isMobile = window.innerWidth <= 768;
     const workItems = document.querySelectorAll('.work-item');
-    workItems.forEach((item, index) => {
-        item.style.transitionDelay = `${index * 0.1}s`;
-    });
+    
+    if (isMobile) {
+        // On mobile, remove all delays
+        workItems.forEach(item => {
+            item.style.transitionDelay = '0s';
+        });
+    } else {
+        // On desktop, add stagger effect
+        workItems.forEach((item, index) => {
+            item.style.transitionDelay = `${index * 0.1}s`;
+        });
+    }
+}
+
+// Initialize work item stagger
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeWorkItemStagger);
 } else {
-    // On mobile, remove all delays
-    document.querySelectorAll('.work-item').forEach(item => {
-        item.style.transitionDelay = '0s';
-    });
+    initializeWorkItemStagger();
 }
 
 // Add click effect to buttons
@@ -609,17 +677,22 @@ document.querySelectorAll('.btn').forEach(btn => {
 });
 
 // Initialize on page load (reduced animation on mobile)
-window.addEventListener('load', () => {
-    if (window.innerWidth <= 768) {
+function initializePageLoad() {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
         // On mobile, show immediately
         document.body.style.opacity = '1';
     } else {
+        // On desktop, enable fade-in
         document.body.style.opacity = '0';
         setTimeout(() => {
             document.body.style.transition = 'opacity 0.5s ease';
             document.body.style.opacity = '1';
         }, 100);
     }
-});
+}
+
+window.addEventListener('load', initializePageLoad);
 
 
