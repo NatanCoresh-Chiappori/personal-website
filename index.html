@@ -458,27 +458,50 @@
                 return theme === 'light' ? '#ffffff' : '#000000';
             }
             
-            // Set canvas size
+            // Set canvas size with high DPI support for sharp rendering
             function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                
+                // Set display size
+                canvas.style.width = rect.width + 'px';
+                canvas.style.height = rect.height + 'px';
+                
+                // Set actual size in memory (scaled for device pixel ratio)
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                
+                // Scale the context to match device pixel ratio for sharp rendering
+                // This makes drawing operations use display coordinates
+                ctx.scale(dpr, dpr);
+                
                 // Fill with background color
                 ctx.fillStyle = getBackgroundColor();
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, rect.width, rect.height);
             }
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
             
+            // Also resize when hero section changes
+            const heroSection = document.querySelector('.hero');
+            if (heroSection) {
+                const resizeObserver = new ResizeObserver(() => {
+                    resizeCanvas();
+                });
+                resizeObserver.observe(heroSection);
+            }
+            
             // Neuron-like Node class
             class Node {
                 constructor() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
+                    const rect = canvas.getBoundingClientRect();
+                    this.x = Math.random() * rect.width;
+                    this.y = Math.random() * rect.height;
                     // Much slower movement on mobile
-                    const speed = isMobile ? 0.05 : 0.2;
+                    const speed = isMobile ? 0.05 : 0.15;
                     this.vx = (Math.random() - 0.5) * speed;
                     this.vy = (Math.random() - 0.5) * speed;
-                    this.size = isMobile ? 2 : 3; // Smaller on mobile
+                    this.size = isMobile ? 1.5 : 2; // Smaller for cleaner look
                     this.angle = Math.random() * Math.PI * 2; // For neuron-like extensions
                     this.hoverDistance = Infinity; // Track mouse hover distance
                 }
@@ -546,46 +569,51 @@
                     this.y += this.vy;
                     
                     // Wrap around edges
-                    if (this.x < 0) this.x = canvas.width;
-                    if (this.x > canvas.width) this.x = 0;
-                    if (this.y < 0) this.y = canvas.height;
-                    if (this.y > canvas.height) this.y = 0;
+                    const rect = canvas.getBoundingClientRect();
+                    if (this.x < 0) this.x = rect.width;
+                    if (this.x > rect.width) this.x = 0;
+                    if (this.y < 0) this.y = rect.height;
+                    if (this.y > rect.height) this.y = 0;
                 }
                 
                 draw() {
                     const color = getNodeColor();
                     ctx.strokeStyle = color;
                     ctx.fillStyle = color;
-                    ctx.lineWidth = 1;
+                    ctx.lineWidth = 0.5; // Thinner lines for cleaner look
                     
-                    // Draw small extensions (neuron-like)
-                    const extLength = 8;
-                    const extCount = 4;
+                    // Draw small extensions (neuron-like) - more subtle
+                    const extLength = isMobile ? 4 : 6;
+                    const extCount = 3; // Fewer extensions for cleaner look
                     for (let i = 0; i < extCount; i++) {
                         const angle = this.angle + (i * Math.PI * 2 / extCount);
                         const endX = this.x + Math.cos(angle) * extLength;
                         const endY = this.y + Math.sin(angle) * extLength;
                         
+                        ctx.globalAlpha = 0.4; // More subtle extensions
                         ctx.beginPath();
                         ctx.moveTo(this.x, this.y);
                         ctx.lineTo(endX, endY);
                         ctx.stroke();
                     }
                     
+                    ctx.globalAlpha = 0.6; // Subtle node visibility
                     // Draw cell body (soma)
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                     ctx.fill();
                     
-                    // Draw center dot (nucleus)
+                    // Draw center dot (nucleus) - more subtle
+                    ctx.globalAlpha = 0.8;
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size * 0.5, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, this.size * 0.4, 0, Math.PI * 2);
                     ctx.fill();
+                    ctx.globalAlpha = 1;
                 }
             }
             
-            // Create neurons - dense network (fewer on mobile)
-            const nodeCount = isMobile ? 30 : 120; // Much fewer nodes on mobile
+            // Create neurons - more subtle network (fewer nodes for cleaner look)
+            const nodeCount = isMobile ? 20 : 60; // Reduced for cleaner, less cluttered appearance
             const nodes = [];
             for (let i = 0; i < nodeCount; i++) {
                 nodes.push(new Node());
@@ -599,9 +627,11 @@
             
             // Animation loop
             function animate() {
+                const rect = canvas.getBoundingClientRect();
+                
                 // Clear with background color - check theme on each frame
                 ctx.fillStyle = getBackgroundColor();
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, rect.width, rect.height);
                 
                 // Update and draw nodes
                 nodes.forEach(node => {
@@ -609,23 +639,22 @@
                     node.draw();
                 });
                 
-                // Draw connections - fully interconnected network
+                // Draw connections - more subtle network
                 const color = getNodeColor();
                 ctx.strokeStyle = color;
-                ctx.lineWidth = 1;
+                ctx.lineWidth = 0.5; // Thinner lines for cleaner appearance
                 
-                // Connect ALL nodes that are within range (fully interconnected)
+                // Connect ALL nodes that are within range (more subtle connections)
+                const connectionRange = isMobile ? 100 : 150;
                 for (let i = 0; i < nodes.length; i++) {
                     for (let j = i + 1; j < nodes.length; j++) {
                         const dx = nodes[i].x - nodes[j].x;
                         const dy = nodes[i].y - nodes[j].y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
                         
-                        // Connect if nodes are within range (reduced on mobile)
-                        const connectionRange = isMobile ? 120 : 180;
                         if (distance < connectionRange) {
-                            // Less visible lines on mobile
-                            const maxOpacity = isMobile ? 0.3 : 0.6;
+                            // More subtle opacity for cleaner look
+                            const maxOpacity = isMobile ? 0.2 : 0.25;
                             const opacity = ((connectionRange - distance) / connectionRange) * maxOpacity;
                             ctx.globalAlpha = opacity;
                             
@@ -645,9 +674,34 @@
             
             // Listen for theme changes and redraw canvas
             const themeObserver = new MutationObserver(() => {
-                // Force a redraw by clearing and refilling
+                // Redraw everything when theme changes
                 ctx.fillStyle = getBackgroundColor();
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
+                // Redraw all nodes with new colors
+                nodes.forEach(node => {
+                    node.draw();
+                });
+                // Redraw connections with new colors
+                const color = getNodeColor();
+                ctx.strokeStyle = color;
+                const connectionRange = isMobile ? 120 : 180;
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < connectionRange) {
+                            const maxOpacity = isMobile ? 0.3 : 0.6;
+                            const opacity = ((connectionRange - distance) / connectionRange) * maxOpacity;
+                            ctx.globalAlpha = opacity;
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                ctx.globalAlpha = 1;
             });
             
             themeObserver.observe(document.documentElement, {
