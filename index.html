@@ -457,45 +457,6 @@
             }
         });
 
-        // Typing effect for hero description (works on mobile and desktop)
-        document.addEventListener('DOMContentLoaded', function() {
-            const description = document.querySelector('.hero-description');
-            if (!description) return;
-            
-            // Check if mobile - use more reliable detection
-            const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (isMobile) {
-                // On mobile: show text immediately, no animation
-                description.classList.remove('typing-cursor');
-                return;
-            }
-            
-            // Desktop: typing animation
-            const originalText = description.textContent.trim();
-            description.textContent = '';
-            description.classList.add('typing-cursor');
-            
-            let charIndex = 0;
-            const typeSpeed = 25; // ms per character - faster to reduce lag
-            
-            function typeNextChar() {
-                if (charIndex < originalText.length) {
-                    description.textContent += originalText.charAt(charIndex);
-                    charIndex++;
-                    setTimeout(typeNextChar, typeSpeed);
-                } else {
-                    // Remove cursor after typing is complete
-                    setTimeout(() => {
-                        description.classList.remove('typing-cursor');
-                    }, 500);
-                }
-            }
-            
-            // Start typing after a short delay (after subtitle starts)
-            setTimeout(typeNextChar, 1500);
-        });
-
         // Reactive Neuron Background (reduced on mobile)
         (function() {
             // Wait for DOM to be ready

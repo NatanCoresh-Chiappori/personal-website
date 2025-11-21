@@ -498,7 +498,7 @@ html.theme-flash::before {
 
 .title-line {
     display: block;
-    font-size: clamp(20px, 3.5vw, 36px);
+    font-size: clamp(15px, 2.5vw, 36px);
     font-weight: 300;
     letter-spacing: -1px;
     line-height: 1.1;
@@ -605,17 +605,6 @@ html.theme-flash::before {
     position: relative;
     z-index: 101; /* Ensure description is visible */
     pointer-events: auto;
-}
-
-.hero-description.typing-cursor::after {
-    content: '';
-    display: inline-block;
-    width: 2px;
-    height: 1.2em;
-    background: var(--text-secondary);
-    margin-left: 4px;
-    animation: blink 1s infinite;
-    vertical-align: baseline;
 }
 
 @keyframes fadeInUp {
