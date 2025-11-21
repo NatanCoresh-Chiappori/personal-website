@@ -490,7 +490,7 @@ html.theme-flash::before {
 }
 
 .hero-title {
-    margin-bottom: 24px;
+    margin-bottom: 25px;
     position: relative;
     z-index: 101; /* Ensure title is visible */
     pointer-events: auto;
