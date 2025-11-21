@@ -15,9 +15,9 @@ const allProjects = [
     {
         title: "Cognitive Attention and Aging using a large cloud dataset",
         description: "Using All of Us data (800,000+ participants), my thesis evaluates how smoking, alcohol use, and social satisfaction relate to sustained attention using regression, spline models, and risk-score methods. I also built a secure web app that computes a user's d′ and cognitive age locally with no data stored or transmitted.",
-        link1: "https://example.com/paper",
-        linkText1: "Link to paper (preprint)",
-        link2: "https://example.com/code",
+        // link1: "https://example.com/paper",
+        // linkText1: "Link to paper (preprint)",
+        link2: "https://cognitive-attention-age-using-a-large.onrender.com/",
         linkText2: "Link to web app",
         tags: ["UI/UX", "Machine Learning", "Data Analysis"],
         image: null
@@ -25,8 +25,8 @@ const allProjects = [
     {
         title: "NIMHD Study on Social Game Dynamics Influencing Physiological Responses",
         description: "Implemented a computer-mediated Cyberball Game model to examine how interactive game dynamics influence users’ biological, behavioral, and affective responses",
-        link: "#",
-        linkText: "Link",
+        // link: "#",
+        // linkText: "Link",
         tags: ["Human Study Design", "Project Management"],
         image: null
     },
@@ -41,9 +41,9 @@ const allProjects = [
     {
         title: "The Current State of Stem Cell Therapies for Neurological Disorders: A Meta-Analysis of Cell Types, Risks, and Translational Outcomes",
         description: "My meta-analysis paper reviews the major stem cell types used in neurological therapies and compares their biological properties. It evaluates their therapeutic potential alongside known risks and translational limitations.",
-        link: "#",
-        linkText: "Link",
-        tags: ["Mobile", "Design"],
+        // link: "#",
+        // linkText: "Link",
+        tags: ["Scientific Writing", "Meta-Analysis"],
         image: null
     },
     // Add more projects here - they'll appear on projects.html but not on the home page
